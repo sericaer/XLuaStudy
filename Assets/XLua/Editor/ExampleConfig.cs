@@ -260,6 +260,9 @@ public static class ExampleConfig
                 new List<string>(){"UnityEngine.Security", "GetChainOfTrustValue"},
                 new List<string>(){"UnityEngine.CanvasRenderer", "onRequestRebuild"},
                 new List<string>(){"UnityEngine.Light", "areaSize"},
+                new List<string>(){"UnityEngine.Light", "SetLightDirty"},
+                new List<string>(){"UnityEngine.Light", "shadowRadius"},
+                new List<string>(){"UnityEngine.Light", "shadowAngle"},
                 new List<string>(){"UnityEngine.Light", "lightmapBakeType"},
                 new List<string>(){"UnityEngine.WWW", "MovieTexture"},
                 new List<string>(){"UnityEngine.WWW", "GetMovieTexture"},
@@ -278,7 +281,6 @@ public static class ExampleConfig
                 new List<string>(){"UnityEngine.MonoBehaviour", "runInEditMode"},
             };
 
-#if UNITY_2018_1_OR_NEWER
     [BlackList]
     public static Func<MemberInfo, bool> MethodFilter = (memberInfo) =>
     {
@@ -307,5 +309,4 @@ public static class ExampleConfig
         }
         return false;
     };
-#endif
 }

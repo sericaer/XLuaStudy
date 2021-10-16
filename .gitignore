@@ -67,3 +67,5 @@ crashlytics-build.properties
 
 Assets/StreamingAssets/save.meta
 Assets/StreamingAssets/log.txt.meta
+
+Assets/XLua/Gen/
