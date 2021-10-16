@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/XLua/Tutorial/LoadLuaScript/ByStreamingAssets/ByStreamingAssets.unity
+    path: Assets/Plugins/XLua/Tutorial/LoadLuaScript/ByStreamingAssets/ByStreamingAssets.unity
     guid: 645674efb2695c04eb519c16ceed1480
   m_configObjects: {}
