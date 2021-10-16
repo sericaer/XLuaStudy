@@ -119,6 +119,11 @@ namespace FairyGUI
             _branchIndex = -1;
         }
 
+        public static void SetDefaultLoadFunc(LoadResource loadfunc)
+        {
+            _loadFromResourcesPath = loadfunc;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -330,14 +335,45 @@ namespace FairyGUI
             return pkg;
         }
 
-        /// <summary>
-        /// Load Package by custom load method.
-        /// </summary>
-        /// <param name="descData">Description file data</param>
-        /// <param name="assetNamePrefix">Prefix of the resource file name. The file name would be in format of 'assetNamePrefix_resFileName'. It can be empty.</param>
-        /// <param name="loadFunc">Load method</param>
-        /// <returns></returns>
-        public static UIPackage AddPackage(byte[] descData, string assetNamePrefix, LoadResource loadFunc)
+        public static UIPackage AddPackageFromStream(string descFilePath)
+        {
+            var path = Application.streamingAssetsPath + "/" + descFilePath + "_fui.bytes";
+
+            var bytes = File.ReadAllBytes(path);
+
+            UIPackage.LoadResource loadResource = (string name, string extension, System.Type type, out DestroyMethod destroyMethod) =>
+            {
+                destroyMethod = DestroyMethod.Destroy;
+
+                var path = Application.streamingAssetsPath + "/Study/" + name + extension;
+
+                if (!File.Exists(path))
+                {
+                    Debug.LogWarning("Can not find file " + path);
+                    return null;
+                }
+
+                byte[] bytes = System.IO.File.ReadAllBytes(path);
+
+                Texture2D texture = new Texture2D(1, 1);
+                texture.LoadImage(bytes);
+
+                return texture;
+            };
+
+            var assetNamePrefix = descFilePath;
+
+            return UIPackage.AddPackage(bytes, assetNamePrefix, loadResource);
+        }
+
+            /// <summary>
+            /// Load Package by custom load method.
+            /// </summary>
+            /// <param name="descData">Description file data</param>
+            /// <param name="assetNamePrefix">Prefix of the resource file name. The file name would be in format of 'assetNamePrefix_resFileName'. It can be empty.</param>
+            /// <param name="loadFunc">Load method</param>
+            /// <returns></returns>
+            public static UIPackage AddPackage(byte[] descData, string assetNamePrefix, LoadResource loadFunc)
         {
             ByteBuffer buffer = new ByteBuffer(descData);
 

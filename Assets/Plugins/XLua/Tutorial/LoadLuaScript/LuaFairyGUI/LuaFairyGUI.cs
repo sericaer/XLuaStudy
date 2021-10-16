@@ -13,6 +13,7 @@ using System.IO;
 using System.Collections.Generic;
 using System;
 using System.Reflection;
+using FairyGUI;
 
 namespace Tutorial
 {
@@ -23,6 +24,24 @@ namespace Tutorial
         void Start()
         {
             Debug.Log("LuaFairyGUI Start");
+
+            //UIPackage.SetDefaultLoadFunc((string name, string extension, System.Type type, out DestroyMethod destroyMethod) =>
+            //{
+            //    destroyMethod = DestroyMethod.Destroy;
+
+            //    var path = Application.streamingAssetsPath  + "/" +  name + extension;
+
+            //    if (!File.Exists(path))
+            //    {
+            //        Debug.LogWarning("Can not find file " + path);
+            //        return null;
+            //    }
+
+            //    var text = System.IO.File.ReadAllText(path);
+
+            //    TextAsset textAsset = new TextAsset(text);
+            //    return textAsset;
+            //});
 
             luaenv = new LuaEnv();
 
