@@ -43,6 +43,8 @@ namespace Tutorial
             //    return textAsset;
             //});
 
+            UIPackage.SetDefaultLoadFunc(StreamingLoader);
+
             luaenv = new LuaEnv();
 
             luaenv.AddLoader((ref string filename) =>
@@ -67,6 +69,26 @@ namespace Tutorial
         void OnDestroy()
         {
             luaenv.Dispose();
+        }
+
+        private object StreamingLoader(string name, string extension, Type type, out DestroyMethod destroyMethod)
+        {
+            destroyMethod = DestroyMethod.Unload;
+
+            if (type == typeof(Byte[]))
+            {
+                var path = $"{Application.streamingAssetsPath}/{name}{extension}";
+                if(!File.Exists(path))
+                {
+                    return null;
+                }
+
+                return File.ReadAllBytes(path);
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }

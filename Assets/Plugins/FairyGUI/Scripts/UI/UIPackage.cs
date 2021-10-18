@@ -311,16 +311,20 @@ namespace FairyGUI
                 return _packageInstById[assetPath];
 
             DestroyMethod dm;
-            TextAsset asset = (TextAsset)loadFunc(assetPath + "_fui", ".bytes", typeof(TextAsset), out dm);
-            if (asset == null)
-            {
-                if (Application.isPlaying)
-                    throw new Exception("FairyGUI: Cannot load ui package in '" + assetPath + "'");
-                else
-                    Debug.LogWarning("FairyGUI: Cannot load ui package in '" + assetPath + "'");
-            }
+            //TextAsset asset = (TextAsset)loadFunc(assetPath + "_fui", ".bytes", typeof(TextAsset), out dm);
+            //if (asset == null)
+            //{
+            //    if (Application.isPlaying)
+            //        throw new Exception("FairyGUI: Cannot load ui package in '" + assetPath + "'");
+            //    else
+            //        Debug.LogWarning("FairyGUI: Cannot load ui package in '" + assetPath + "'");
+            //}
 
-            ByteBuffer buffer = new ByteBuffer(asset.bytes);
+            //ByteBuffer buffer = new ByteBuffer(asset.bytes);
+
+            Byte[] bytes = loadFunc(assetPath + "_fui", ".bytes", typeof(Byte[]), out dm) as Byte[];
+
+            ByteBuffer buffer = new ByteBuffer(bytes);
 
             UIPackage pkg = new UIPackage();
             pkg._loadFunc = loadFunc;
@@ -335,36 +339,36 @@ namespace FairyGUI
             return pkg;
         }
 
-        public static UIPackage AddPackageFromStream(string descFilePath)
-        {
-            var path = Application.streamingAssetsPath + "/" + descFilePath + "_fui.bytes";
+        //public static UIPackage AddPackageFromStream(string descFilePath)
+        //{
+        //    var path = Application.streamingAssetsPath + "/" + descFilePath + ".bytes";
 
-            var bytes = File.ReadAllBytes(path);
+        //    var bytes = File.ReadAllBytes(path);
 
-            UIPackage.LoadResource loadResource = (string name, string extension, System.Type type, out DestroyMethod destroyMethod) =>
-            {
-                destroyMethod = DestroyMethod.Destroy;
+        //    UIPackage.LoadResource loadResource = (string name, string extension, System.Type type, out DestroyMethod destroyMethod) =>
+        //    {
+        //        destroyMethod = DestroyMethod.Destroy;
 
-                var path = Application.streamingAssetsPath + "/Study/" + name + extension;
+        //        var path = Application.streamingAssetsPath + "/Study/" + name + extension;
 
-                if (!File.Exists(path))
-                {
-                    Debug.LogWarning("Can not find file " + path);
-                    return null;
-                }
+        //        if (!File.Exists(path))
+        //        {
+        //            Debug.LogWarning("Can not find file " + path);
+        //            return null;
+        //        }
 
-                byte[] bytes = System.IO.File.ReadAllBytes(path);
+        //        byte[] bytes = System.IO.File.ReadAllBytes(path);
 
-                Texture2D texture = new Texture2D(1, 1);
-                texture.LoadImage(bytes);
+        //        Texture2D texture = new Texture2D(1, 1);
+        //        texture.LoadImage(bytes);
 
-                return texture;
-            };
+        //        return texture;
+        //    };
 
-            var assetNamePrefix = descFilePath;
+        //    var assetNamePrefix = descFilePath;
 
-            return UIPackage.AddPackage(bytes, assetNamePrefix, loadResource);
-        }
+        //    return UIPackage.AddPackage(bytes, assetNamePrefix, loadResource);
+        //}
 
             /// <summary>
             /// Load Package by custom load method.
@@ -1442,7 +1446,7 @@ namespace FairyGUI
             else
             {
                 DestroyMethod dm;
-                object ret = _loadFunc(fileName, ext, typeof(TextAsset), out dm);
+                object ret = _loadFunc(fileName, ext, typeof(Byte[]), out dm);
                 if (ret == null)
                     return null;
                 if (ret is byte[])

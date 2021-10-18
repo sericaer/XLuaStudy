@@ -2,6 +2,6 @@ require 'FairyGUI'
 
 print('lua_fairy_gui')
 
-UIPackage.AddPackageFromStream('SingleButton')
+UIPackage.AddPackage('SingleButton')
 local view = UIPackage.CreateObject('SingleButton', 'Component1')
 GRoot.inst:AddChild(view)
